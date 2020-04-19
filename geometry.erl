@@ -1,42 +1,34 @@
 -module(geometry).
 -export([
-  point/2, 
+  point/1,
+  point/2,
   point/3,
-  line2d/2, 
-  line/4,
-  distance/1,
-  distance/2
+  pointN/1,
+  line/2,
+  distance/1
 ]).
 
+% point/1
+point(X) -> {pointN, [X]}.
 
-point(X,Y) -> {point2d, X, Y}.
+% point/2
+point(X,Y) -> {pointN, [X, Y]}.
 
-point(X,Y,Z) -> {point3d, X, Y, Z}.
+% point/3
+point(X,Y,Z) -> {pointN, [X, Y, Z]}.
 
-line2d({point2d, X1, Y1}, {point2d, X2, Y2}) ->
-  {line2d, point(X1, Y1), point(X2, Y2)}.
+% pointN/1
+pointN([X|Xs]) -> {pointN, [X|Xs]}.
 
-line2d(X1, Y1, X2, Y2) -> line2d(point(X1, Y1), point(X2, Y2)).
+line({pointN, [X1|X1s]}, {pointN, [X2|X2s]}) ->
+  {lineN, {pointN, [X1|X1s]}, {pointN, [X2|X2s]}}.
 
-distance({line2d, {point2d, X1, Y1}, {point2d, X2, Y2}}) ->
-  DX = ibmath:abs(X2 - X1),
-  DY = ibmath:abs(Y2 - Y1),
-  math:sqrt(DX*DX + DY*DY).
-
-distance(P1, P2) -> distance(line2d(P1, P2)).
-
-perimeter({rectangle, Width, Height}) -> 2 * (Width + Height);
-perimeter({square, Side}) -> 4 * Side;
-perimeter({circle, Radius}) -> 2 * ibmath:pi() * Radius;
-perimeter({triangle, A, B, C}) -> A + B + C.
-
-tau(S) -> perimeter(S) / 2.
-
-area({rectangle, Width, Height}) -> Width * Height;
-area({square, Side}) -> Side * Side;
-area({circle, Radius}) -> ibmath:pi() * Radius * Radius;
-area({triangle, A, B, C}) -> 
-  T = tau({triangle, A, B, C}),
-  RSq = T * (T - A) * (T - B) * (T - C),
-  math:sqrt(RSq).
+distance({lineN, {pointN, Xs1}, {pointN, Xs2}}) ->
+  % TODO
+  %sqrt((X11 - X21)^2 + (X12 - X22)^2 + (X13 - X23)^2 + ...)
+  math:sqrt(mathx:square_diff_sum(Xs1, Xs2)).
   
+
+% distance
+% area
+% perimeter
