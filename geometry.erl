@@ -5,8 +5,8 @@
   point/3,
   point_n/1,
   line/2,
-  distance/1,
   distance/2,
+  distance_n/3
 ]).
 
 % point/1
@@ -24,24 +24,19 @@ point_n([X|Xs]) -> {point_n, [X|Xs]}.
 line({point_n, [X1|X1s]}, {point_n, [X2|X2s]}) ->
   {line_n, {point_n, [X1|X1s]}, {point_n, [X2|X2s]}}.
 
-distance({line_n, {point_n, Xs1}, {point_n, Xs2}}) ->
-  % TODO
-  %sqrt((X11 - X21)^2 + (X12 - X22)^2 + (X13 - X23)^2 + ...)
-  math:sqrt(
-    listsx:reduce(
-      fun (A, B) -> A + B end,
-      0,
+distance_n({point_n, Xs1}, {point_n, Xs2}, Order) ->
+  mathx:root(
+    listsx:sum(
       listsx:map(
-        fun ({Fst,Snd}) -> (Fst - Snd) * (Fst - Snd) end,
+        fun ({Fst,Snd}) -> math:pow((Fst - Snd), Order) end,
         listsx:zip(Xs1, Xs2)
       )
-    )
+    ),
+    Order
   ).
 
+distance(P1, P2) -> distance_n(P1, P2, 2). 
 
-distance(Point1, Point2) -> distance(line(Point1, Point2)).
-
-distanceN(Order
 
 
 % area
