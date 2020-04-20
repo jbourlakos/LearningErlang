@@ -36,6 +36,6 @@ multiply(List) -> reduce_l(fun (A, B) -> A * B end, 1, List).
 % zip/2
 % combine pairwise elements from two lists, into one list
 zip([], []) -> [];
-zip([], [H2|T2]) -> [{nothing , H2} | zip([], T2)];
-zip([H1|T1], []) -> [{H1, nothing} | zip(T1, [])];
+zip([], [H2|T2]) -> [{undefined , H2} | zip([], T2)];
+zip([H1|T1], []) -> [{H1, undefined} | zip(T1, [])];
 zip([H1|T1] , [H2|T2] ) -> [{H1, H2} | zip(T1, T2)].

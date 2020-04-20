@@ -37,6 +37,7 @@ distance_n({point_n, Xs1}, {point_n, Xs2}, Order) ->
 
 distance(P1, P2) -> distance_n(P1, P2, 2). 
 
+% angles
 
 
 % area
